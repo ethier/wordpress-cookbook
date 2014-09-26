@@ -38,27 +38,27 @@ directory node['wordpress']['dir'] do
   else
     owner node['wordpress']['install']['user']
     group node['wordpress']['install']['group']
-    # mode  '00755'
+    mode  '00755'
   end
 end
 
 archive = platform_family?('windows') ? 'wordpress.zip' : 'wordpress.tar.gz'
 
-if platform_family?('windows')
-  windows_zipfile node['wordpress']['parent_dir'] do
-    source node['wordpress']['url']
-    action :unzip
-    not_if {::File.exists?("#{node['wordpress']['dir']}\\index.php")}
-  end
-else
-  tar_extract node['wordpress']['url'] do
-    target_dir node['wordpress']['dir']
-    creates File.join(node['wordpress']['dir'], 'index.php')
-    user node['wordpress']['install']['user']
-    group node['wordpress']['install']['group']
-    tar_flags [ '--strip-components 1' ]
-  end
-end
+# if platform_family?('windows')
+#   windows_zipfile node['wordpress']['parent_dir'] do
+#     source node['wordpress']['url']
+#     action :unzip
+#     not_if {::File.exists?("#{node['wordpress']['dir']}\\index.php")}
+#   end
+# else
+#   tar_extract node['wordpress']['url'] do
+#     target_dir node['wordpress']['dir']
+#     creates File.join(node['wordpress']['dir'], 'index.php')
+#     user node['wordpress']['install']['user']
+#     group node['wordpress']['install']['group']
+#     tar_flags [ '--strip-components 1' ]
+#   end
+# end
 
 template "#{node['wordpress']['dir']}/wp-config.php" do
   source 'wp-config.php.erb'

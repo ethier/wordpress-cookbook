@@ -38,7 +38,7 @@ directory node['wordpress']['dir'] do
   else
     owner node['wordpress']['install']['user']
     group node['wordpress']['install']['group']
-    mode  '00755'
+    # mode  '00755'
   end
 end
 
